@@ -11,23 +11,8 @@ class Update extends React.Component {
             count: 0,
             data:null
         };
-        this.increment = this.increment.bind(this)
-        this.decrement = this.decrement.bind(this)
-        this.updateStarCount = this.updateStarCount.bind(this)
-    }
-    increment() {
-        this.setState({
-          count: this.state.count + 1
-        });
-      };
-      
-      decrement() {
-          if(!this.state.count == 0)
-        this.setState({
-          count: this.state.count - 1
-        });
-      };
-
+        
+    } 
  getFirebaseData(page, callback) {
   let self = this;  
     var firebaseConfig = {
@@ -41,7 +26,10 @@ class Update extends React.Component {
       measurementId: "G-0RTB99HY1L"
     };
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if(!firebase.apps.length){
+      firebase.initializeApp(firebaseConfig);
+    }
+    
  //   firebase.analytics();
     var ref = firebase.app().database().ref();
     ref.once("value").then(function (snap) {
@@ -50,29 +38,30 @@ class Update extends React.Component {
     });
 }
 updateStarCount(data){
-  let self = this;  
+  let self = this;   
   self.setState({
     data:data
   })
 }
       componentDidMount(){
-          this.getFirebaseData()
-        var swiper = new window.Swiper('.swiper-container', {
-            spaceBetween: 30,
-            //effect: 'fade',
-            pagination: {
-                el: '.swiper-pagination',
-                //clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-          });
+          this.getFirebaseData() 
       }
 
+  updateData(){
+    var bodyContent = document.getElementById('bodyContent').value.toString();
+  var footerContent = document.getElementById('footerContent').value.toString(); 
+  
+    
+    var firebaseRef = firebase.database().ref().child("mainContent"); 
+
+    firebaseRef.child("bodyContent").set(bodyContent);
+    firebaseRef.child("footerContent").set(footerContent);
+  //  var userEmail = bodyContent.value + " " + footerContent.value; 
+  //  firebaseRef.push().set(userEmail); 
+  }
 render(){ 
     let self = this;
+  //  return <h1>Nitin</h1>
     if(!this.state.data){
       return <div className="temp-preloader"><img src={"/images/preloader.gif"} alt="" /></div>
     }
@@ -87,13 +76,10 @@ render(){
     </div> 
     <div class="swiper-pagination"></div>
   </div>
-       
-  <div class="bounce upperSide">
-        <p>{data.bodyContent}</p>
-    </div>
-  <div class="bounce">
-        <p>{data.footerContent}</p>
-    </div>
+        
+  <textarea defaultValue={data.mainContent.bodyContent} id="bodyContent"></textarea> 
+  <textarea defaultValue={data.mainContent.footerContent} id="footerContent"></textarea>   
+  <button onClick={self.updateData}>Submit</button>
       </div>   
   
 }

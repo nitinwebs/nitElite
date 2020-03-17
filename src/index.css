@@ -50,7 +50,7 @@ code {
   }
 }
 .bounce.upperSide {
-  min-height: 1200px;
+  min-height: 920px;
 }
  
 .bounce.upperSide  p {
@@ -80,3 +80,5 @@ code {
       transform: translateY(-100%);
   }
 }
+
+textarea{height: 300px !important}

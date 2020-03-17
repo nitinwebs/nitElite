@@ -3,30 +3,15 @@ import CustomBuildSwiper from './swiper'
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import axios from "axios"
-
+var swiper;
 class Project2 extends React.Component { 
     constructor(props){
         super(props)
-        this.state = {
-            count: 0,
+        this.state = { 
             data:null
-          };
-        this.increment = this.increment.bind(this)
-        this.decrement = this.decrement.bind(this)
-        this.updateStarCount = this.updateStarCount.bind(this)
+          };  
     }
-    increment() {
-        this.setState({
-          count: this.state.count + 1
-        });
-      };
-      
-      decrement() {
-          if(!this.state.count == 0)
-        this.setState({
-          count: this.state.count - 1
-        });
-      };
+ 
 
  getFirebaseData(page, callback) {
   let self = this;  
@@ -41,49 +26,70 @@ class Project2 extends React.Component {
       measurementId: "G-0RTB99HY1L"
     };
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if(!firebase.apps.length){
+      firebase.initializeApp(firebaseConfig);
+    }
  //   firebase.analytics();
     var ref = firebase.app().database().ref();
     ref.once("value").then(function (snap) {
       self.updateStarCount(snap.val()) 
     console.log("snap.val()", snap.val());
-    });
+    }); 
+    
 }
 updateStarCount(data){
   let self = this;  
   self.setState({
     data:data
+  },function(){
+    self.slider()
   })
+}
+slider(){
+  swiper = new window.Swiper('.swiper-container', {
+    spaceBetween: 30,
+    //effect: 'fade',
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        //clickable: true,
+    },
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+  });
 }
       componentDidMount(){
           this.getFirebaseData()
-        var swiper = new window.Swiper('.swiper-container', {
-            spaceBetween: 30,
-            //effect: 'fade',
-            pagination: {
-                el: '.swiper-pagination',
-                //clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-          });
+         
       }
 
 render(){ 
     let self = this;
+    let styleData = `
+    img.img-style {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+  }
+    `
     if(!this.state.data){
       return <div className="temp-preloader"><img src={"/images/preloader.gif"} alt="" /></div>
     }
     console.log("data",this.state.data)
     let data = self.state.data
+    let slider = self.state.data.gallery.map(function(v){ 
+      return <div class="swiper-slide"><img src='images/image-1x1.png' alt="" style={{ backgroundImage: 'url(' + v + ')' }} className='img-style'/></div>
+    }) 
     return <div class="container" style={{width:'100%'}}>
+    <style>{styleData}</style>
       <div class="swiper-container">
     <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src='images/image-2x1.png' alt=""/></div>
-      <div class="swiper-slide"><img src='images/image-2x1.png' alt=""/></div>
-      <div class="swiper-slide"><img src='images/image-2x1.png' alt=""/></div>
+      {slider} 
     </div> 
     <div class="swiper-pagination"></div>
   </div>
