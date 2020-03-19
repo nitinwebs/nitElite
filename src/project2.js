@@ -95,10 +95,10 @@ render(){
   </div>
        
   <div class="bounce upperSide">
-        <p>{data.bodyContent}</p>
+        <p>{data.mainContent.bodyContent}</p>
     </div>
   <div class="bounce">
-        <p>{data.footerContent}</p>
+        <p>{data.mainContent.footerContent}</p>
     </div>
       </div>   
   

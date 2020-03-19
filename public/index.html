@@ -41,6 +41,7 @@
     <title>Hello!!</title>
   </head>
   <body>
+
     <noscript>You need to enable JavaScript to run this app.</noscript>
     
     <div id="root"></div>
@@ -59,5 +60,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
 
     <!-- The core Firebase JS SDK is always required and must be listed first --> 
+
+    <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+              // Registration was successful
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+              // registration failed :(
+              console.log('ServiceWorker registration failed: ', err);
+            }).catch(function(err) {
+              console.log(err)
+            });
+          });
+        } else {
+          console.log('service worker is not supported');
+        }
+      </script>
     </body>
 </html>

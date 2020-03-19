@@ -17,7 +17,7 @@ export function BasicExample() {
   return (
     <Router>
       <div>
-        <ul>
+        {/* <ul>
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -26,7 +26,7 @@ export function BasicExample() {
           </li> 
         </ul>
 
-        <hr />
+        <hr /> */}
 
         {/*
           A <Switch> looks through all its children <Route>
