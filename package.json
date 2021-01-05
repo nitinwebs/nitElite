@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://dbarochiya.github.io/me",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "firebase": "^7.10.0",
     "gh-pages": "^2.0.1",
     "materialize-css": "^1.0.0",
